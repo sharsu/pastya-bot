@@ -1,0 +1,27 @@
+pastya-bot:
+  url-filters:
+    skip-https-pages: true
+    skip-images: false
+    skip-redirects: true
+    skip-ftp-files: true
+    skip-mail-to-urls: true
+    skip-outgoing-links: false
+    max-outgoing-links-to-follow: 500
+    
+  agent-info:
+    user-agent: pastya-bot
+    
+  runnable-info:
+    socket-timeout: 20000 # in milliseconds
+    connection-timeout: 30000 # in milliseconds
+    thread-monitoring-delay-seconds: 10 # in seconds
+    thread-shutdown-delay-seconds: 10 # in seconds
+    cleanup-delay-seconds: 10 # in seconds
+  
+  crawler-info:
+    storage-folder: C:\\Users\\sudhesh.rajan\\temp
+    resumable: false # To be implemented in next version
+    politeness-delay: 200 # in milliseconds
+    max-download-size: 1048576 # in bytes
+    max-depth: 1
+    max-pages: 100

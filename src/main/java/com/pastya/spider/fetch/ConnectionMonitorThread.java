@@ -1,0 +1,41 @@
+package com.pastya.spider.fetch;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+
+public class ConnectionMonitorThread extends Thread {
+
+   private final PoolingHttpClientConnectionManager connMgr;
+   private volatile boolean shutdown;
+
+   public ConnectionMonitorThread(PoolingHttpClientConnectionManager connMgr) {
+       setDaemon(true);
+       setName("Pastya-Bot-Connection-Mgr-Thread");
+       this.connMgr = connMgr;
+   }
+
+   @Override
+   public void run() {
+      try {
+         while (!shutdown) {
+            synchronized (this) {
+               wait(5000);
+               // Close expired connections
+               connMgr.closeExpiredConnections();
+               // Optionally, close connections that have been idle longer than 30 sec
+               connMgr.closeIdleConnections(30, TimeUnit.SECONDS);
+            }
+         }
+      } catch (InterruptedException ignored) {
+         // terminate
+      }
+   }
+
+   public void shutdown() {
+      shutdown = true;
+      synchronized (this) {
+         notifyAll();
+      }
+   }
+}
